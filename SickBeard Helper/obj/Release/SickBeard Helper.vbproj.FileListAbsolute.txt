@@ -1,0 +1,45 @@
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.config
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.manifest
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.application
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.pdb
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.xml
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\System.Data.SQLite.dll
+D:\Codebase\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.Resources.resources
+D:\Codebase\SickBeard Helper\SickBeard Helper\obj\Release\SickBeard Helper.vbproj.GenerateResource.Cache
+D:\Codebase\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.exe.manifest
+D:\Codebase\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.application
+D:\Codebase\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.exe
+D:\Codebase\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.xml
+D:\Codebase\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.pdb
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.CodeAnalysisLog.xml
+D:\Codebase\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.lastcodeanalysissucceeded
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.config
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.exe
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.xml
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.pdb
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.manifest
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.application
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.pdb
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.xml
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\bin\Release\System.Data.SQLite.dll
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SickBeard Helper.vbprojResolveAssemblyReference.cache
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.Resources.resources
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SickBeard Helper.vbproj.GenerateResource.Cache
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.exe.manifest
+C:\Users\admin\Desktop\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.application
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.config
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.exe
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.xml
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.pdb
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe.manifest
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.application
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.exe
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.pdb
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\bin\Release\SB_Helper.xml
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\bin\Release\System.Data.SQLite.dll
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.Resources.resources
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\Release\SickBeard Helper.vbproj.GenerateResource.Cache
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.exe.manifest
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\Release\SB_Helper.application
