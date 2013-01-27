@@ -220,7 +220,7 @@ Module modMain
 
         If lsProvider = "KAT" Then
             'lsURL = "http://www.kat.ph/new/?q=" & lsSearch & "&field=seeders&sorder=desc&rss=1"
-            lsURL = "http://kat.ph/usearch/" & lsName & " season:" & lsSeason & " episode:" & lsEpisode & "/?rss=1"
+            lsURL = "http://kickasstorrents.com/usearch/" & lsName & " season:" & lsSeason & " episode:" & lsEpisode & "/?rss=1"
         ElseIf lsProvider = "BTJ" Then
             lsURL = "http://btjunkie.org/rss.xml?q=" & lsSearch & "&o=52"
         ElseIf lsProvider = "EZR" Then
