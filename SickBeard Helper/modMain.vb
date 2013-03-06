@@ -143,6 +143,9 @@ Module modMain
             arrAirTime = lsAirTimeData.Split(" ")
             If arrAirTime.Length > 2 Then
                 lsAirTime = DateTime.Today & " " & arrAirTime(1) & " " & arrAirTime(2)
+            ElseIf InStr(arrAirTime(1), "|") > 0 Then
+                arrAirTime(1) = Replace(arrAirTime(1).Substring(InStr(arrAirTime(1), "|")), "c", ":00 PM")
+                lsAirTime = DateTime.Today & " " & arrAirTime(1)
             Else
                 lsAirTime = DateTime.Today & " " & arrAirTime(1)
             End If

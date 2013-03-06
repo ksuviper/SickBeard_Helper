@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity name="SB_Helper.exe" version="1.0.0.28" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="SB_Helper" version="1.0.0.27" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="SB_Helper" version="1.0.0.28" language="neutral" processorArchitecture="msil" />
     <commandLine file="SB_Helper.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,13 +43,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SB_Helper.exe" size="32768">
-      <assemblyIdentity name="SB_Helper" version="1.0.0.27" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="SB_Helper" version="1.0.0.28" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>rNP46p2saRsKK6fqeoPeNGoY1Oc=</dsig:DigestValue>
+        <dsig:DigestValue>c+Xw6uSKsJOkwKbdspmEuQykcvc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

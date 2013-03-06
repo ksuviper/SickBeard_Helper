@@ -26,3 +26,4 @@ F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\o
 F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\x86\Release\SickBeard Helper.vbproj.GenerateResource.Cache
 F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\x86\Release\SB_Helper.exe.manifest
 F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\x86\Release\SB_Helper.application
+F:\ServerFolders\Documents\viper\Codebase\VB\SickBeard Helper\SickBeard Helper\obj\x86\Release\SickBeard Helper.vbprojResolveAssemblyReference.cache
