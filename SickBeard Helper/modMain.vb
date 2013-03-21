@@ -130,7 +130,7 @@ Module modMain
         Dim rsData As SQLite.SQLiteDataReader
         Dim lsQuery As String = ""
         Dim lsEpisode As String = ""
-        Dim arrProv(1) As String
+        Dim arrProv(0) As String
         Dim llDate As Long = 0
         Dim arrAirTime() As String
         Dim lsAirTime As DateTime
@@ -138,6 +138,8 @@ Module modMain
         Dim lbFound As Boolean = False
 
         lsName = lsName.Replace(":", "")
+        'lsName = lsName.Replace("(", "")
+        'lsName = lsName.Replace(")", "")
         llDate = DateDiff("d", "1/1/100", DateAdd("yyyy", 99, DateTime.Today)) + 1
         If lsAirTimeData.Length > 0 Then
             arrAirTime = lsAirTimeData.Split(" ")
@@ -155,7 +157,7 @@ Module modMain
         'If Fix(Hour(DateTime.Now) / 2) = Hour(DateTime.Now) / 2 Then
         arrProv(0) = "KAT"
         'arrProv(1) = "BTJ"
-        arrProv(1) = "EZR"
+        'arrProv(1) = "EZR"
         'Else
         'arrProv(0) = "BTJ"
         'arrProv(1) = "KAT"
@@ -217,13 +219,15 @@ Module modMain
         Dim lsData As String = ""
         Dim arrString() As String
         Dim liMinSeed As Integer = 5
+        Dim bAltSearchCriteria As Boolean = False
         Dim objXMLSettings As Xml.XmlReaderSettings = New Xml.XmlReaderSettings
 
         Console.WriteLine("Looking For: " & lsSearch & " (Provider: " & lsProvider & ")")
 
         If lsProvider = "KAT" Then
             'lsURL = "http://www.kat.ph/new/?q=" & lsSearch & "&field=seeders&sorder=desc&rss=1"
-            lsURL = "http://kickasstorrents.com/usearch/" & lsName & " season:" & lsSeason & " episode:" & lsEpisode & "/?rss=1"
+            'lsURL = "http://kickasstorrents.com/usearch/" & lsName & " season:" & lsSeason & " episode:" & lsEpisode & "/?rss=1"
+            lsURL = "http://kickasstorrents.com/usearch/" & lsName & " s" & CInt(lsSeason).ToString("D2") & "e" & CInt(lsEpisode).ToString("D2") & "/?rss=1"
         ElseIf lsProvider = "BTJ" Then
             lsURL = "http://btjunkie.org/rss.xml?q=" & lsSearch & "&o=52"
         ElseIf lsProvider = "EZR" Then
@@ -240,12 +244,44 @@ Module modMain
                 Console.WriteLine("No suitable torrent found on provider: " & lsProvider & ".")
                 FindEpisode = False
                 Exit Function
+                'bAltSearchCriteria = True
             Else
                 Console.WriteLine("Hosed! Exception: " & ex.Message)
                 FindEpisode = False
                 Exit Function
             End If
         End Try
+
+        'If bAltSearchCriteria Then
+        '    If lsProvider = "KAT" Then
+        '        'lsURL = "http://www.kat.ph/new/?q=" & lsSearch & "&field=seeders&sorder=desc&rss=1"
+        '        lsURL = "http://kickasstorrents.com/usearch/" & lsName & " s" & CInt(lsSeason).ToString("D2") & "e" & CInt(lsEpisode).ToString("D2") & "/?rss=1"
+        '    ElseIf lsProvider = "BTJ" Then
+        '        lsURL = "http://btjunkie.org/rss.xml?q=" & lsSearch & "&o=52"
+        '    ElseIf lsProvider = "EZR" Then
+        '        lsURL = "http://www.ezrss.it/search/index.php?show_name=" & lsName & "&season=" & lsSeason
+        '        lsURL = lsURL & "&episode=" & lsEpisode & "&mode=rss"
+        '        objXMLSettings.ProhibitDtd = False
+        '    End If
+
+        '    Try
+        '        'objWeb.Encoding = System.Text.Encoding.UTF8
+        '        lsXML = objWeb.DownloadString(lsURL)
+
+        '    Catch ex As Exception
+        '        If ex.Message.Contains("(404)") Then
+        '            Console.WriteLine("No suitable torrent found on provider: " & lsProvider & ".")
+        '            FindEpisode = False
+        '            Exit Function
+        '        Else
+        '            Console.WriteLine("Hosed! Exception: " & ex.Message)
+        '            FindEpisode = False
+        '            Exit Function
+        '        End If
+        '    End Try
+
+        'End If
+
         lbFound = False
 
         Try
@@ -259,13 +295,13 @@ Module modMain
                         'lsTorrent = objReader.ReadElementContentAsString()                        
                         'objReader.MoveToAttribute("length")
                         'llSize = objReader.Value
-                        objReader.ReadToFollowing("hash")
+                        objReader.ReadToFollowing("torrent:infoHash")
                         lsHash = objReader.ReadElementContentAsString()
-                        objReader.ReadToFollowing("seeds")
+                        objReader.ReadToFollowing("torrent:seeds")
                         liSeeds = objReader.ReadElementContentAsString()
-                        objReader.ReadToFollowing("size")
-                        llSize = objReader.ReadElementContentAsString()
-                        objReader.ReadToFollowing("verified")
+                        'objReader.ReadToFollowing("size")
+                        'llSize = objReader.ReadElementContentAsString()
+                        objReader.ReadToFollowing("torrent:verified")
                         liVerified = objReader.ReadElementContentAsString()
                         objReader.ReadToFollowing("enclosure")
                         objReader.MoveToAttribute("url")
@@ -340,12 +376,13 @@ Module modMain
                     lsTitle.ToUpper.Contains(lsSeason & "X" & lsEpisode) Or _
                     lsTitle.ToUpper.Contains(lsSeason & lsEpisode)) And _
                     Not (lsTitle.ToUpper.Contains("SWESUB") Or lsTitle.ToUpper.Contains("NLSUB")) And _
-                    Not (lsTitle.ToUpper.Contains("SPANISH") Or lsTitle.ToUpper.Contains("DUTCH")) Then
+                    Not (lsTitle.ToUpper.Contains("SPANISH") Or lsTitle.ToUpper.Contains("DUTCH")) And _
+                    Not (lsTitle.ToUpper.Contains("FRENCH")) Then
 
                         If (liVerified = 1 Or (lsProvider = "KAT" And liSeeds > 10) Or _
                         ((lsTitle.ToUpper.Contains("XVID-LOL") Or lsTitle.ToUpper.Contains("EZTV") Or _
                         lsTitle.ToUpper.Contains("[VTV]")) And liSeeds > 0)) _
-                        And ((llSize > 99000000 And llSize < 400000000) Or lsProvider = "EZR") Then 'Standard def
+                        And ((llSize > 99000000 And llSize < 500000000) Or lsProvider = "EZR") Then 'Standard def (larger than 99mb and less than 500mb)
 
                             'Make sure we haven't already tried this one
                             If My.Computer.FileSystem.FileExists(gsTorrentDir & lsTitle & "_" & lsHash & ".torrent.loaded") Then
@@ -360,10 +397,28 @@ Module modMain
                                     Exit While
                                 End If
                             End If
+                            'Else 'check for hi-def version if no std-def
+                            '    If (liVerified = 1 Or (lsProvider = "KAT" And liSeeds > 10) Or _
+                            '    ((lsTitle.ToUpper.Contains("XVID-LOL") Or lsTitle.ToUpper.Contains("EZTV") Or _
+                            '    lsTitle.ToUpper.Contains("[VTV]")) And liSeeds > 0)) _
+                            '    And ((llSize > 500000000 And llSize < 1000000000) Or lsProvider = "EZR") Then 'High def (larger than 500mb and less than 1gb)
 
+                            '        'Make sure we haven't already tried this one
+                            '        If My.Computer.FileSystem.FileExists(gsTorrentDir & lsTitle & "_" & lsHash & ".torrent.loaded") Then
+                            '            lbFound = False
+                            '        ElseIf My.Computer.FileSystem.FileExists(gsTorrentDir & lsTitle & "_" & lsHash & ".torrent") Then
+                            '            lbFound = False
+                            '        Else
+                            '            If liStatus = 1 And liSeeds < 100 Then 'If we are getting something that just aired, check seeders
+                            '                lbFound = False
+                            '            Else
+                            '                lbFound = True
+                            '                Exit While
+                            '            End If
+                            '        End If
+                            '    End If
                         End If
                     End If
-
                 End While
             End Using
         Catch ex As Exception
