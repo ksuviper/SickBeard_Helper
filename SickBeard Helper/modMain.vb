@@ -130,7 +130,7 @@ Module modMain
         Dim rsData As SQLite.SQLiteDataReader
         Dim lsQuery As String = ""
         Dim lsEpisode As String = ""
-        Dim arrProv(0) As String
+        Dim arrProv() As String
         Dim llDate As Long = 0
         Dim arrAirTime() As String
         Dim lsAirTime As DateTime
@@ -155,13 +155,12 @@ Module modMain
 
         'Disabled for now: On even hours, check KickAss First.  On odd hours, check BTJunkie first
         'If Fix(Hour(DateTime.Now) / 2) = Hour(DateTime.Now) / 2 Then
-        arrProv(0) = "KAT"
-        'arrProv(1) = "BTJ"
-        'arrProv(1) = "EZR"
-        'Else
-        'arrProv(0) = "BTJ"
-        'arrProv(1) = "KAT"
-        'End If
+        ReDim arrProv(0)
+        arrProv(0) = "KAT.PH"
+        ReDim Preserve arrProv(arrProv.Length)
+        arrProv(1) = "BITSNOOP"
+        'ReDim Preserve arrProv(arrProv.Length)
+        'arrProv(1) = "EZRSS"        
 
         lsQuery = "Select * From tv_episodes Where showid = " & liId & " And (Status = 3 "
         'AirTime is already in Eastern, so it's checking an hour after the show's airtime
@@ -224,20 +223,25 @@ Module modMain
 
         Console.WriteLine("Looking For: " & lsSearch & " (Provider: " & lsProvider & ")")
 
-        If lsProvider = "KAT" Then
-            'lsURL = "http://www.kat.ph/new/?q=" & lsSearch & "&field=seeders&sorder=desc&rss=1"
-            'lsURL = "http://kickasstorrents.com/usearch/" & lsName & " season:" & lsSeason & " episode:" & lsEpisode & "/?rss=1"
-            lsURL = "http://kickasstorrents.com/usearch/" & lsName & " s" & CInt(lsSeason).ToString("D2") & "e" & CInt(lsEpisode).ToString("D2") & "/?rss=1"
-        ElseIf lsProvider = "BTJ" Then
-            lsURL = "http://btjunkie.org/rss.xml?q=" & lsSearch & "&o=52"
-        ElseIf lsProvider = "EZR" Then
-            lsURL = "http://www.ezrss.it/search/index.php?show_name=" & lsName & "&season=" & lsSeason
-            lsURL = lsURL & "&episode=" & lsEpisode & "&mode=rss"
-            objXMLSettings.ProhibitDtd = False
-        End If
-        Try            
+        Select Case lsProvider
+            Case "KAT.PH"
+                'lsURL = "http://www.kat.ph/new/?q=" & lsSearch & "&field=seeders&sorder=desc&rss=1"
+                'lsURL = "http://kickasstorrents.com/usearch/" & lsName & " season:" & lsSeason & " episode:" & lsEpisode & "/?rss=1"
+                lsURL = "http://kickasstorrents.com/usearch/" & lsName & " s" & CInt(lsSeason).ToString("D2") & "e" & CInt(lsEpisode).ToString("D2") & "/?rss=1"
+            Case "BITSNOOP"
+                lsURL = "http://bitsnoop.com/search/all/" & lsName & " S" & CInt(lsSeason).ToString("D2") & "E" & CInt(lsEpisode).ToString("D2") & "/?fmt=rss"
+                objXMLSettings.ProhibitDtd = False
+            Case "EZRSS"
+                lsURL = "http://www.ezrss.it/search/index.php?show_name=" & lsName & "&season=" & lsSeason
+                lsURL = lsURL & "&episode=" & lsEpisode & "&mode=rss"
+                objXMLSettings.ProhibitDtd = False
+            Case Else
+
+        End Select
+
+        Try
             'objWeb.Encoding = System.Text.Encoding.UTF8
-            lsXML = objWeb.DownloadString(lsURL)            
+            lsXML = objWeb.DownloadString(lsURL)
 
         Catch ex As Exception
             If ex.Message.Contains("(404)") Then
@@ -290,62 +294,50 @@ Module modMain
                 While objReader.ReadToFollowing("title")
                     lsTitle = objReader.ReadElementContentAsString()
 
-                    If lsProvider = "KAT" Then
-                        'objReader.ReadToFollowing("torrentLink")
-                        'lsTorrent = objReader.ReadElementContentAsString()                        
-                        'objReader.MoveToAttribute("length")
-                        'llSize = objReader.Value
-                        objReader.ReadToFollowing("torrent:infoHash")
-                        lsHash = objReader.ReadElementContentAsString()
-                        objReader.ReadToFollowing("torrent:seeds")
-                        liSeeds = objReader.ReadElementContentAsString()
-                        'objReader.ReadToFollowing("size")
-                        'llSize = objReader.ReadElementContentAsString()
-                        objReader.ReadToFollowing("torrent:verified")
-                        liVerified = objReader.ReadElementContentAsString()
-                        objReader.ReadToFollowing("enclosure")
-                        objReader.MoveToAttribute("url")
-                        lsTorrent = objReader.Value
-                        objReader.MoveToAttribute("length")
-                        llSize = objReader.Value
-                    ElseIf lsProvider = "BTJ" Then
-                        liIndex = lsTitle.LastIndexOf("[")
-                        lsData = lsTitle.Substring(liIndex)
-                        lsData = lsData.Replace("[", "").Replace("]", "")
-                        arrString = lsData.Split("/")
-                        If Not IsNumeric(arrString(0)) Then
-                            liSeeds = 0
-                        Else
-                            liSeeds = CInt(arrString(0))
-                        End If
-                        lsTitle = Trim(Left(lsTitle, liIndex - 1))
-                        objReader.ReadToFollowing("guid")
-                        lsData = objReader.ReadElementContentAsString()
-                        liIndex = lsData.LastIndexOf("/")
-                        lsHash = lsData.Substring(liIndex + 1)
-                        objReader.ReadToFollowing("enclosure")
-                        objReader.MoveToAttribute("url")
-                        lsTorrent = objReader.Value
-                        objReader.MoveToAttribute("length")
-                        llSize = objReader.Value
-                        If liSeeds > 0 Then
+                    Select Case lsProvider
+                        Case "KAT.PH"
+                            objReader.ReadToFollowing("torrent:infoHash")
+                            lsHash = objReader.ReadElementContentAsString()
+                            objReader.ReadToFollowing("torrent:seeds")
+                            liSeeds = objReader.ReadElementContentAsString()
+                            objReader.ReadToFollowing("torrent:verified")
+                            liVerified = objReader.ReadElementContentAsString()
+                            objReader.ReadToFollowing("enclosure")
+                            objReader.MoveToAttribute("url")
+                            lsTorrent = objReader.Value
+                            objReader.MoveToAttribute("length")
+                            llSize = objReader.Value
+                        Case "BITSNOOP"
+                            objReader.ReadToFollowing("numSeeders")
+                            liSeeds = objReader.ReadElementContentAsString()
+                            objReader.ReadToFollowing("enclosure")
+                            objReader.MoveToAttribute("url")
+                            lsTorrent = objReader.Value
+                            objReader.MoveToAttribute("length")
+                            llSize = objReader.Value
+                            objReader.ReadToFollowing("infoHash")
+                            lsHash = objReader.ReadElementContentAsString()
+                            Dim lsFakeskan = objWeb.DownloadString("http://bitsnoop.com/api/fakeskan.php?hash=" + lsHash)
+                            Select Case lsFakeskan
+                                Case "VERIFIED", "GOOD"
+                                    liVerified = 1
+                                Case "BAD", "FAKE"
+                                    liVerified = 0
+                                Case Else
+                                    liVerified = 0
+                            End Select
+                        Case "EZRSS"
+                            lsTitle = lsTitle.Replace("<![CDATA[", "").Replace("]", "").Replace("[", "")
+                            liSeeds = 100
                             liVerified = 1
-                        Else
-                            liVerified = 0
-                        End If
-                    ElseIf lsProvider = "EZR" Then
-                        lsTitle = lsTitle.Replace("<![CDATA[", "").Replace("]", "").Replace("[", "")
-                        liSeeds = 100
-                        liVerified = 1
-                        objReader.ReadToFollowing("enclosure")
-                        objReader.MoveToAttribute("url")
-                        lsTorrent = objReader.Value
-                        objReader.MoveToAttribute("length")
-                        llSize = objReader.Value
-                        objReader.ReadToFollowing("infoHash")
-                        lsHash = objReader.ReadElementContentAsString()
-                    End If
-
+                            objReader.ReadToFollowing("enclosure")
+                            objReader.MoveToAttribute("url")
+                            lsTorrent = objReader.Value
+                            objReader.MoveToAttribute("length")
+                            llSize = objReader.Value
+                            objReader.ReadToFollowing("infoHash")
+                            lsHash = objReader.ReadElementContentAsString()
+                    End Select
                     'Certain characters are not legal in folder/file names
                     lsTitle = lsTitle.Replace("\", "").Replace("/", "")
                     lsTitle = lsTitle.Replace("<", "").Replace(">", "")
@@ -379,11 +371,10 @@ Module modMain
                     Not (lsTitle.ToUpper.Contains("SPANISH") Or lsTitle.ToUpper.Contains("DUTCH")) And _
                     Not (lsTitle.ToUpper.Contains("FRENCH")) Then
 
-                        If (liVerified = 1 Or (lsProvider = "KAT" And liSeeds > 10) Or _
-                        ((lsTitle.ToUpper.Contains("XVID-LOL") Or lsTitle.ToUpper.Contains("EZTV") Or _
-                        lsTitle.ToUpper.Contains("[VTV]")) And liSeeds > 0)) _
-                        And ((llSize > 99000000 And llSize < 500000000) Or lsProvider = "EZR") Then 'Standard def (larger than 99mb and less than 500mb)
-
+                        'If (liVerified = 1 Or (lsProvider = "KAT.PH" And liSeeds > 10) Or _
+                        If (liVerified = 1 Or _
+                        ((lsTitle.ToUpper.Contains("XVID-LOL") Or lsTitle.ToUpper.Contains("EZTV") Or lsTitle.ToUpper.Contains("[VTV]")) And liSeeds > 0)) _
+                        And ((llSize > 99000000 And llSize < 500000000) Or lsProvider = "EZRSS") Then 'Standard def (larger than 99mb and less than 500mb)
                             'Make sure we haven't already tried this one
                             If My.Computer.FileSystem.FileExists(gsTorrentDir & lsTitle & "_" & lsHash & ".torrent.loaded") Then
                                 lbFound = False
@@ -398,11 +389,9 @@ Module modMain
                                 End If
                             End If
                             'Else 'check for hi-def version if no std-def
-                            '    If (liVerified = 1 Or (lsProvider = "KAT" And liSeeds > 10) Or _
-                            '    ((lsTitle.ToUpper.Contains("XVID-LOL") Or lsTitle.ToUpper.Contains("EZTV") Or _
-                            '    lsTitle.ToUpper.Contains("[VTV]")) And liSeeds > 0)) _
-                            '    And ((llSize > 500000000 And llSize < 1000000000) Or lsProvider = "EZR") Then 'High def (larger than 500mb and less than 1gb)
-
+                            '    If (liVerified = 1 Or _
+                            '    ((lsTitle.ToUpper.Contains("XVID-LOL") Or lsTitle.ToUpper.Contains("EZTV") Or lsTitle.ToUpper.Contains("[VTV]")) And liSeeds > 0)) _
+                            '    And ((llSize > 500000000 And llSize < 1000000000) Or lsProvider = "EZRSS") Then 'High def (larger than 500mb and less than 1gb)
                             '        'Make sure we haven't already tried this one
                             '        If My.Computer.FileSystem.FileExists(gsTorrentDir & lsTitle & "_" & lsHash & ".torrent.loaded") Then
                             '            lbFound = False
@@ -428,7 +417,7 @@ Module modMain
 
         If lbFound Then
             objRequest = WebRequest.Create(lsTorrent)
-            'If lsProvider = "KAT" Then
+            'If lsProvider = "KAT.PH" Then
             '    objRequest.Headers.Add(System.Net.HttpRequestHeader.Referer, "http://kat.ph/")
             'End If
             objRequest.AutomaticDecompression = DecompressionMethods.Deflate Or DecompressionMethods.GZip
